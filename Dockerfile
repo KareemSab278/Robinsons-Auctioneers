@@ -1,17 +1,20 @@
-# Use an official Python image
+# Use the official Python image from the Docker Hub
 FROM python:3.11-slim
 
-# Set working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy everything
+# Copy the current directory contents into the container at /app
 COPY . .
 
-# Install dependencies
-RUN pip install flask bcrypt
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port
+# Make port 10000 available to the world outside this container
 EXPOSE 10000
 
-# Run the app
+# Define environment variable
+ENV FLASK_APP=python.py
+
+# Run python.py when the container launches
 CMD ["python", "python.py"]
