@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel - Add Auction Win</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>Add Auction Win</h2>
+    <form method="POST">
+      <label>User:</label>
+      <select name="username" required>
+        {% for user in users %}
+          <option value="{{ user }}">{{ user }}</option>
+        {% endfor %}
+      </select>
+
+      <input type="text" name="title" placeholder="Title" required>
+      <textarea name="description" placeholder="Description" required></textarea>
+      <input type="text" name="image" placeholder="Image URL" required>
+      <input type="date" name="auction_date" required>
+      <input type="number" step="0.01" name="final_bid" placeholder="Final Bid (£)" required>
+
+      <button type="submit">Add Win</button>
+    </form>
+
+    <p><a href="/logout">Logout</a></p>
+  </div>
+</body>
+</html>

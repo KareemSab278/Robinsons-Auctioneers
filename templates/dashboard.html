@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard - Robinsons Auctioneers</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>Your Auction Wins</h2>
+    <a href="/logout">Logout</a>
+    {% if auctions %}
+      <div class="auctions">
+        {% for auction in auctions %}
+          <div class="auction-card">
+            <img src="{{ auction[2] }}" alt="{{ auction[0] }}">
+            <h3>{{ auction[0] }}</h3>
+            <p>{{ auction[1] }}</p>
+            <p><strong>Date:</strong> {{ auction[3] }}</p>
+            <p><strong>Final Bid:</strong> £{{ auction[4] }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No auction wins found.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
