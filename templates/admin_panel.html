@@ -24,6 +24,21 @@
       <button type="submit">Add Win</button>
     </form>
 
+    <h3>Previous Wins</h3>
+    {% for win in wins %}
+      <form method="POST" action="/edit_win/{{ win['id'] }}">
+        <input type="hidden" name="username" value="{{ win['username'] }}">
+        <input type="text" name="title" value="{{ win['title'] }}" required>
+        <textarea name="description" required>{{ win['description'] }}</textarea>
+        <input type="text" name="image" value="{{ win['image'] }}" required>
+        <input type="date" name="auction_date" value="{{ win['auction_date'] }}" required>
+        <input type="number" step="0.01" name="final_bid" value="{{ win['final_bid'] }}" required>
+        <button type="submit">Update</button>
+        <a href="/delete_win/{{ win['id'] }}" onclick="return confirm('Delete this win?')">Delete</a>
+      </form>
+      <hr>
+    {% endfor %}
+
     <p><a href="/logout">Logout</a></p>
   </div>
 </body>

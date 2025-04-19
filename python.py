@@ -113,7 +113,38 @@ def admin_panel():
             conn.commit()
         return redirect(url_for('admin_panel'))
 
-    return render_template('admin_panel.html', users=users)
+    with sqlite3.connect(WINS_DB) as conn:
+        c = conn.cursor()
+        c.execute('SELECT * FROM wins')
+        wins = [dict(id=row[0], username=row[1], title=row[2], description=row[3], image=row[4], auction_date=row[5], final_bid=row[6]) for row in c.fetchall()]
+
+    return render_template('admin_panel.html', users=users, wins=wins)
+
+@app.route('/edit_win/<int:win_id>', methods=['POST'])
+def edit_win(win_id):
+    if session.get('username') != 'admin':
+        return redirect(url_for('index'))
+    title = request.form['title']
+    description = request.form['description']
+    image = request.form['image']
+    auction_date = request.form['auction_date']
+    final_bid = float(request.form['final_bid'])
+    with sqlite3.connect(WINS_DB) as conn:
+        c = conn.cursor()
+        c.execute('''UPDATE wins SET title=?, description=?, image=?, auction_date=?, final_bid=? WHERE id=?''',
+                  (title, description, image, auction_date, final_bid, win_id))
+        conn.commit()
+    return redirect(url_for('admin_panel'))
+
+@app.route('/delete_win/<int:win_id>')
+def delete_win(win_id):
+    if session.get('username') != 'admin':
+        return redirect(url_for('index'))
+    with sqlite3.connect(WINS_DB) as conn:
+        c = conn.cursor()
+        c.execute('DELETE FROM wins WHERE id=?', (win_id,))
+        conn.commit()
+    return redirect(url_for('admin_panel'))
 
 @app.route('/logout')
 def logout():
